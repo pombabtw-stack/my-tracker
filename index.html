@@ -1,0 +1,210 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>Work & Finance Tracker</title>
+    
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+    <meta name="apple-mobile-web-app-title" content="Tracker">
+    <link rel="apple-touch-icon" href="https://via.placeholder.com/192/4f46e5/ffffff?text=W">
+
+    <script src="https://cdn.tailwindcss.com"></script>
+    <style>
+        body { font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif; background-color: #f8fafc; }
+        .card { background: white; border-radius: 12px; box-shadow: 0 1px 3px rgba(0,0,0,0.1); }
+        .tab-content { display: none; }
+        .tab-content.active { display: block; }
+        input, select, textarea { border: 1px solid #e2e8f0; border-radius: 8px; padding: 8px 12px; width: 100%; }
+        .nav-btn.active { color: #4f46e5; border-bottom: 2px solid #4f46e5; }
+    </style>
+</head>
+<body class="pb-20">
+
+    <header class="p-6">
+        <h1 id="page-title" class="text-2xl font-bold text-slate-800">Dashboard</h1>
+        <p class="text-sm text-slate-500">March 2026 overview</p>
+    </header>
+
+    <main class="px-4 space-y-4">
+        
+        <div id="tab-dashboard" class="tab-content active space-y-4">
+            <div class="grid grid-cols-2 gap-4">
+                <div class="card p-4">
+                    <div class="flex justify-between items-start">
+                        <div>
+                            <p class="text-xs text-slate-500 uppercase font-semibold">Hours This Month</p>
+                            <h2 id="dash-hours" class="text-xl font-bold">0.0h</h2>
+                            <p id="dash-days" class="text-xs text-slate-400">0 days logged</p>
+                        </div>
+                        <div class="bg-indigo-100 p-2 rounded-lg text-indigo-600">🕒</div>
+                    </div>
+                </div>
+                <div class="card p-4">
+                    <div class="flex justify-between items-start">
+                        <div>
+                            <p class="text-xs text-slate-500 uppercase font-semibold">Income</p>
+                            <h2 id="dash-income" class="text-xl font-bold text-emerald-600">$0</h2>
+                        </div>
+                        <div class="bg-emerald-100 p-2 rounded-lg text-emerald-600">📈</div>
+                    </div>
+                </div>
+                <div class="card p-4">
+                    <div class="flex justify-between items-start">
+                        <div>
+                            <p class="text-xs text-slate-500 uppercase font-semibold">Expenses</p>
+                            <h2 id="dash-expenses" class="text-xl font-bold text-red-600">$0</h2>
+                        </div>
+                        <div class="bg-red-100 p-2 rounded-lg text-red-600">📉</div>
+                    </div>
+                </div>
+                <div class="card p-4">
+                    <div class="flex justify-between items-start">
+                        <div>
+                            <p class="text-xs text-slate-500 uppercase font-semibold">Balance</p>
+                            <h2 id="dash-balance" class="text-xl font-bold">$0</h2>
+                        </div>
+                        <div class="bg-slate-100 p-2 rounded-lg text-slate-600">💰</div>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="card p-4 h-32 flex flex-col items-center justify-center text-slate-400 text-center">
+                <p class="text-sm font-semibold text-slate-600">Saving Tip</p>
+                <p id="saving-tip" class="text-xs px-4">Log some data to get personalized tips!</p>
+            </div>
+        </div>
+
+        <div id="tab-work" class="tab-content space-y-4">
+            <div class="card p-4 space-y-3">
+                <div class="grid grid-cols-2 gap-2">
+                    <div>
+                        <label class="text-xs font-bold text-slate-500">DATE</label>
+                        <input type="date" id="work-date">
+                    </div>
+                    <div>
+                        <label class="text-xs font-bold text-slate-500">START / END</label>
+                        <div class="flex gap-1">
+                            <input type="time" id="work-start">
+                            <input type="time" id="work-end">
+                        </div>
+                    </div>
+                </div>
+                <div>
+                    <label class="text-xs font-bold text-slate-500 uppercase">What did you do?</label>
+                    <textarea id="work-desc" rows="2" placeholder="Describe your work..."></textarea>
+                </div>
+                <button onclick="logWork()" class="w-full bg-indigo-600 text-white font-bold py-3 rounded-xl">+ Log Work</button>
+            </div>
+            <div class="card p-4">
+                <h3 class="font-bold text-slate-700 mb-2">Recent Entries</h3>
+                <div id="work-history" class="text-sm text-slate-500 space-y-2">No entries yet.</div>
+            </div>
+        </div>
+
+        <div id="tab-finance" class="tab-content space-y-4">
+            <div class="card p-4 space-y-4">
+                <div class="flex gap-2">
+                    <button id="btn-inc" onclick="setFinType('income')" class="flex-1 py-2 rounded-lg font-bold bg-slate-100">Income</button>
+                    <button id="btn-exp" onclick="setFinType('expense')" class="flex-1 py-2 rounded-lg font-bold bg-red-600 text-white">Expense</button>
+                </div>
+                <div class="grid grid-cols-2 gap-2">
+                    <input type="date" id="fin-date">
+                    <input type="number" id="fin-amount" placeholder="Amount">
+                </div>
+                <input type="text" id="fin-note" placeholder="Optional note...">
+                <button onclick="logFinance()" class="w-full bg-indigo-600 text-white font-bold py-3 rounded-xl">+ Add Transaction</button>
+            </div>
+            <div id="fin-history" class="card p-4 text-sm text-slate-500">No transactions yet.</div>
+        </div>
+
+        <div id="tab-settings" class="tab-content">
+            <div class="card p-4 border-2 border-red-100">
+                <h3 class="text-red-600 font-bold flex items-center gap-2">⚠️ Danger Zone</h3>
+                <p class="text-xs text-slate-500 mt-1 mb-4">Permanently delete all logs and data.</p>
+                <button onclick="clearData()" class="w-full bg-red-600 text-white py-2 rounded-lg font-bold">Delete All Data</button>
+            </div>
+        </div>
+
+    </main>
+
+    <nav class="fixed bottom-0 left-0 right-0 bg-white border-t flex justify-around p-3 pb-6">
+        <button onclick="showTab('dashboard')" class="nav-btn active text-xs">🏠<br>Home</button>
+        <button onclick="showTab('work')" class="nav-btn text-xs">🕒<br>Work</button>
+        <button onclick="showTab('finance')" class="nav-btn text-xs">💰<br>Finance</button>
+        <button onclick="showTab('settings')" class="nav-btn text-xs">⚙️<br>Settings</button>
+    </nav>
+
+    <script>
+        let currentFinType = 'expense';
+        let db = JSON.parse(localStorage.getItem('myAppData')) || { work: [], finance: [] };
+
+        function showTab(tabId) {
+            document.querySelectorAll('.tab-content').forEach(t => t.classList.remove('active'));
+            document.querySelectorAll('.nav-btn').forEach(b => b.classList.remove('active'));
+            document.getElementById('tab-' + tabId).classList.add('active');
+            document.getElementById('page-title').innerText = tabId.charAt(0).toUpperCase() + tabId.slice(1);
+            updateUI();
+        }
+
+        function setFinType(type) {
+            currentFinType = type;
+            document.getElementById('btn-inc').className = type === 'income' ? 'flex-1 py-2 rounded-lg font-bold bg-emerald-600 text-white' : 'flex-1 py-2 rounded-lg font-bold bg-slate-100';
+            document.getElementById('btn-exp').className = type === 'expense' ? 'flex-1 py-2 rounded-lg font-bold bg-red-600 text-white' : 'flex-1 py-2 rounded-lg font-bold bg-slate-100';
+        }
+
+        function logWork() {
+            const start = document.getElementById('work-start').value;
+            const end = document.getElementById('work-end').value;
+            if(!start || !end) return alert("Select times");
+            
+            const diff = (new Date(`2026-01-01 ${end}`) - new Date(`2026-01-01 ${start}`)) / 1000 / 60 / 60;
+            db.work.push({ date: document.getElementById('work-date').value, hours: diff.toFixed(1), desc: document.getElementById('work-desc').value });
+            save();
+        }
+
+        function logFinance() {
+            const amt = parseFloat(document.getElementById('fin-amount').value);
+            if(!amt) return;
+            db.finance.push({ type: currentFinType, amount: amt, date: document.getElementById('fin-date').value, note: document.getElementById('fin-note').value });
+            save();
+        }
+
+        function save() {
+            localStorage.setItem('myAppData', JSON.stringify(db));
+            updateUI();
+        }
+
+        function updateUI() {
+            // Totals
+            const totalHours = db.work.reduce((sum, entry) => sum + parseFloat(entry.hours), 0);
+            const totalInc = db.finance.filter(f => f.type === 'income').reduce((sum, f) => sum + f.amount, 0);
+            const totalExp = db.finance.filter(f => f.type === 'expense').reduce((sum, f) => sum + f.amount, 0);
+
+            document.getElementById('dash-hours').innerText = totalHours.toFixed(1) + 'h';
+            document.getElementById('dash-days').innerText = db.work.length + ' days logged';
+            document.getElementById('dash-income').innerText = '$' + totalInc;
+            document.getElementById('dash-expenses').innerText = '$' + totalExp;
+            document.getElementById('dash-balance').innerText = '$' + (totalInc - totalExp);
+
+            // History
+            document.getElementById('work-history').innerHTML = db.work.slice(-3).reverse().map(w => `<div class="border-b pb-1">${w.date}: ${w.hours}h - ${w.desc}</div>`).join('') || "No entries";
+            document.getElementById('fin-history').innerHTML = db.finance.slice(-3).reverse().map(f => `<div class="border-b pb-1">${f.type.toUpperCase()}: $${f.amount} (${f.note})</div>`).join('') || "No transactions";
+            
+            // Logic-based Tips
+            const tip = document.getElementById('saving-tip');
+            if (totalExp > totalInc && totalInc > 0) tip.innerText = "Warning: Spending higher than income! Try the 50/30/20 rule.";
+            else if (totalHours > 40) tip.innerText = "You've worked hard! Remember to log your next payday.";
+            else tip.innerText = "Keep tracking to see your financial health.";
+        }
+
+        function clearData() { if(confirm("Clear everything?")) { localStorage.clear(); location.reload(); } }
+        
+        // Set default dates
+        document.getElementById('work-date').valueAsDate = new Date();
+        document.getElementById('fin-date').valueAsDate = new Date();
+        updateUI();
+    </script>
+</body>
+</html>
