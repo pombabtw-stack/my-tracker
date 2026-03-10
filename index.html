@@ -4,26 +4,19 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
     <title>Work & Finance Pro</title>
-    <link rel="manifest" href="manifest.json">
-    
     <meta name="apple-mobile-web-app-capable" content="yes">
     <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
-    <meta name="apple-mobile-web-app-title" content="Tracker Pro">
-    <link rel="apple-touch-icon" href="https://via.placeholder.com/192/4f46e5/ffffff?text=W">
     <link rel="manifest" href="manifest.json">
-
+    <link rel="apple-touch-icon" href="https://via.placeholder.com/192/4f46e5/ffffff?text=W">
     <script src="https://cdn.tailwindcss.com"></script>
     <style>
-        body { font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif; background-color: #f8fafc; user-select: none; -webkit-tap-highlight-color: transparent; }
-        .card { background: white; border-radius: 16px; transition: all 0.1s; border: 1px solid #f1f5f9; }
-        .card:active { transform: scale(0.97); background-color: #f8fafc; }
+        body { font-family: -apple-system, system-ui, sans-serif; background-color: #f8fafc; user-select: none; -webkit-tap-highlight-color: transparent; }
+        .card { background: white; border-radius: 16px; border: 1px solid #f1f5f9; }
         .tab-content { display: none; }
-        .tab-content.active { display: block; animation: fadeIn 0.3s ease; }
-        @keyframes fadeIn { from { opacity: 0; transform: translateY(5px); } to { opacity: 1; transform: translateY(0); } }
+        .tab-content.active { display: block; }
         .pin-screen { position: fixed; inset: 0; background: white; z-index: 100; display: flex; flex-direction: column; align-items: center; justify-content: center; }
-        input, select, textarea { border: 1px solid #e2e8f0; border-radius: 12px; padding: 12px; width: 100%; font-size: 16px; outline: none; }
-        input:focus { border-color: #4f46e5; }
-        .nav-btn { display: flex; flex-direction: column; align-items: center; color: #94a3b8; font-weight: 600; font-size: 10px; }
+        input { border: 1px solid #e2e8f0; border-radius: 12px; padding: 12px; width: 100%; font-size: 16px; }
+        .nav-btn { display: flex; flex-direction: column; align-items: center; color: #94a3b8; font-size: 10px; font-weight: bold; }
         .nav-btn.active { color: #4f46e5; }
     </style>
 </head>
@@ -38,114 +31,98 @@
             <div id="dot-4" class="w-4 h-4 rounded-full border-2 border-slate-300"></div>
         </div>
         <div class="grid grid-cols-3 gap-6">
-            {[1,2,3,4,5,6,7,8,9].map(n => `<button onclick="pressPin(${n})" class="w-16 h-16 rounded-full bg-slate-50 text-2xl font-bold active:bg-indigo-100 active:text-indigo-600 transition-colors">${n}</button>`).join('')}
+            <button onclick="pressPin(1)" class="w-16 h-16 rounded-full bg-slate-50 text-2xl font-bold active:bg-indigo-100">1</button>
+            <button onclick="pressPin(2)" class="w-16 h-16 rounded-full bg-slate-50 text-2xl font-bold active:bg-indigo-100">2</button>
+            <button onclick="pressPin(3)" class="w-16 h-16 rounded-full bg-slate-50 text-2xl font-bold active:bg-indigo-100">3</button>
+            <button onclick="pressPin(4)" class="w-16 h-16 rounded-full bg-slate-50 text-2xl font-bold active:bg-indigo-100">4</button>
+            <button onclick="pressPin(5)" class="w-16 h-16 rounded-full bg-slate-50 text-2xl font-bold active:bg-indigo-100">5</button>
+            <button onclick="pressPin(6)" class="w-16 h-16 rounded-full bg-slate-50 text-2xl font-bold active:bg-indigo-100">6</button>
+            <button onclick="pressPin(7)" class="w-16 h-16 rounded-full bg-slate-50 text-2xl font-bold active:bg-indigo-100">7</button>
+            <button onclick="pressPin(8)" class="w-16 h-16 rounded-full bg-slate-50 text-2xl font-bold active:bg-indigo-100">8</button>
+            <button onclick="pressPin(9)" class="w-16 h-16 rounded-full bg-slate-50 text-2xl font-bold active:bg-indigo-100">9</button>
             <span></span>
             <button onclick="pressPin(0)" class="w-16 h-16 rounded-full bg-slate-50 text-2xl font-bold active:bg-indigo-100">0</button>
-            <button onclick="clearPin()" class="text-xs font-bold text-red-500 uppercase tracking-widest">Clear</button>
+            <button onclick="clearPin()" class="text-xs font-bold text-red-500 uppercase">Clear</button>
         </div>
     </div>
 
     <header class="p-6">
         <h1 id="page-title" class="text-3xl font-black text-slate-900">Dashboard</h1>
-        <p id="current-month-display" class="text-slate-500 font-medium lowercase italic"></p>
+        <p id="current-month-display" class="text-slate-500 font-medium italic"></p>
     </header>
 
     <main class="px-4 space-y-4">
-        
         <div id="tab-dashboard" class="tab-content active space-y-4">
             <div class="grid grid-cols-2 gap-4">
                 <div onclick="showTab('work')" class="card p-4 shadow-sm border-b-4 border-indigo-500">
-                    <p class="text-[10px] font-black text-slate-400 uppercase tracking-wider">Weekly Hours</p>
+                    <p class="text-[10px] font-black text-slate-400 uppercase">Weekly Hours</p>
                     <h2 id="dash-week" class="text-2xl font-bold text-indigo-600">0h</h2>
-                    <p class="text-[10px] text-slate-400 mt-1">Month: <span id="dash-month" class="font-bold">0h</span></p>
+                    <p class="text-[10px] text-slate-400">Month: <span id="dash-month">0h</span></p>
                 </div>
                 <div onclick="showTab('finance')" class="card p-4 shadow-sm border-b-4 border-emerald-500">
-                    <p class="text-[10px] font-black text-slate-400 uppercase tracking-wider">Income</p>
+                    <p class="text-[10px] font-black text-slate-400 uppercase">Income</p>
                     <h2 id="dash-income" class="text-2xl font-bold text-emerald-600">$0</h2>
                 </div>
                 <div onclick="showTab('finance')" class="card p-4 shadow-sm border-b-4 border-red-500">
-                    <p class="text-[10px] font-black text-slate-400 uppercase tracking-wider">Expenses</p>
+                    <p class="text-[10px] font-black text-slate-400 uppercase">Expenses</p>
                     <h2 id="dash-expenses" class="text-2xl font-bold text-red-600">$0</h2>
                 </div>
                 <div onclick="showTab('finance')" class="card p-4 shadow-sm border-b-4 border-slate-800">
-                    <p class="text-[10px] font-black text-slate-400 uppercase tracking-wider">Balance</p>
+                    <p class="text-[10px] font-black text-slate-400 uppercase">Balance</p>
                     <h2 id="dash-balance" class="text-2xl font-bold">$0</h2>
                 </div>
             </div>
-            
             <div class="card p-5 bg-gradient-to-br from-indigo-600 to-violet-700 text-white shadow-lg">
-                <p class="text-[10px] font-bold opacity-70 uppercase tracking-widest mb-1">Financial Tip</p>
-                <p id="saving-tip" class="text-sm font-medium leading-relaxed">Start logging your daily work hours to see your trends!</p>
+                <p id="saving-tip" class="text-sm font-medium leading-relaxed">Log hours to see insights.</p>
             </div>
         </div>
 
         <div id="tab-work" class="tab-content space-y-4">
-            <div class="card p-5 space-y-4 shadow-sm">
-                <div class="grid grid-cols-2 gap-3">
-                    <div class="col-span-2"><label class="text-[10px] font-bold text-slate-400 uppercase ml-1">Date</label><input type="date" id="work-date"></div>
-                    <div><label class="text-[10px] font-bold text-slate-400 uppercase ml-1">Start</label><input type="time" id="work-start"></div>
-                    <div><label class="text-[10px] font-bold text-slate-400 uppercase ml-1">End</label><input type="time" id="work-end"></div>
+            <div class="card p-5 space-y-4">
+                <input type="date" id="work-date">
+                <div class="grid grid-cols-2 gap-2">
+                    <input type="time" id="work-start">
+                    <input type="time" id="work-end">
                 </div>
-                <div>
-                    <label class="text-[10px] font-bold text-slate-400 uppercase ml-1">Break Time (Minutes)</label>
-                    <input type="number" id="work-break" value="0" placeholder="0">
-                </div>
-                <button onclick="logWork()" class="w-full bg-slate-900 text-white font-bold py-4 rounded-2xl shadow-lg active:scale-95 transition-transform">Save Entry</button>
+                <input type="number" id="work-break" placeholder="Break Minutes (e.g. 30)">
+                <button onclick="logWork()" class="w-full bg-slate-900 text-white font-bold py-4 rounded-2xl">Save Work Log</button>
             </div>
         </div>
 
         <div id="tab-finance" class="tab-content space-y-4">
-            <div class="card p-5 space-y-4 shadow-sm">
+            <div class="card p-5 space-y-4">
                 <div class="flex bg-slate-100 p-1 rounded-xl">
-                    <button id="btn-inc" onclick="setFinType('income')" class="flex-1 py-2 rounded-lg font-bold text-sm transition-all">Income</button>
-                    <button id="btn-exp" onclick="setFinType('expense')" class="flex-1 py-2 rounded-lg font-bold text-sm bg-white shadow text-red-600 transition-all">Expense</button>
+                    <button id="btn-inc" onclick="setFinType('income')" class="flex-1 py-2 rounded-lg font-bold">Income</button>
+                    <button id="btn-exp" onclick="setFinType('expense')" class="flex-1 py-2 rounded-lg font-bold bg-white text-red-600 shadow">Expense</button>
                 </div>
-                <div class="grid grid-cols-2 gap-3">
-                    <input type="number" id="fin-amount" placeholder="0.00">
-                    <input type="date" id="fin-date">
-                </div>
-                <button onclick="logFinance()" class="w-full bg-slate-900 text-white font-bold py-4 rounded-2xl shadow-lg active:scale-95 transition-transform">Add Transaction</button>
+                <input type="number" id="fin-amount" placeholder="0.00">
+                <input type="date" id="fin-date">
+                <button onclick="logFinance()" class="w-full bg-slate-900 text-white font-bold py-4 rounded-2xl">Add Transaction</button>
             </div>
         </div>
 
         <div id="tab-settings" class="tab-content">
-            <div class="card p-5 border-2 border-red-500/10">
-                <h3 class="text-red-600 font-bold mb-1">Danger Zone</h3>
-                <p class="text-xs text-slate-500 mb-4">Clearing data will reset your PIN and all logged history.</p>
-                <button onclick="clearData()" class="w-full bg-red-50 text-red-600 py-3 rounded-xl font-bold border border-red-200">Reset Everything</button>
+            <div class="card p-5">
+                <button onclick="clearData()" class="w-full bg-red-50 text-red-600 py-3 rounded-xl font-bold">Reset All App Data</button>
             </div>
         </div>
-
     </main>
 
-    <nav class="fixed bottom-0 left-0 right-0 bg-white/90 backdrop-blur-lg border-t border-slate-100 flex justify-around p-4 pb-8 z-50">
-        <button onclick="showTab('dashboard')" class="nav-btn active" id="nav-dashboard">
-            <span class="text-2xl mb-1">🏠</span>Home
-        </button>
-        <button onclick="showTab('work')" class="nav-btn" id="nav-work">
-            <span class="text-2xl mb-1">🕒</span>Work
-        </button>
-        <button onclick="showTab('finance')" class="nav-btn" id="nav-finance">
-            <span class="text-2xl mb-1">💰</span>Finance
-        </button>
-        <button onclick="showTab('settings')" class="nav-btn" id="nav-settings">
-            <span class="text-2xl mb-1">⚙️</span>Setup
-        </button>
+    <nav class="fixed bottom-0 left-0 right-0 bg-white border-t flex justify-around p-4 pb-8">
+        <button onclick="showTab('dashboard')" class="nav-btn active" id="nav-dashboard">🏠<br>Home</button>
+        <button onclick="showTab('work')" class="nav-btn" id="nav-work">🕒<br>Work</button>
+        <button onclick="showTab('finance')" class="nav-btn" id="nav-finance">💰<br>Finance</button>
+        <button onclick="showTab('settings')" class="nav-btn" id="nav-settings">⚙️<br>Settings</button>
     </nav>
 
     <script>
-        // Data Store
-        let db = JSON.parse(localStorage.getItem('user_data_secure')) || { work: [], finance: [], pin: null };
+        let db = JSON.parse(localStorage.getItem('secure_v2')) || { work: [], finance: [], pin: null };
         let currentPinInput = "";
         let currentFinType = 'expense';
 
-        // 1. PIN Logic
         function initApp() {
-            const display = new Date().toLocaleDateString('en-US', {month:'long', year:'numeric'});
-            document.getElementById('current-month-display').innerText = display + " summary";
-            if (!db.pin) {
-                document.getElementById('pin-label').innerText = "Set Your New PIN";
-            }
+            document.getElementById('current-month-display').innerText = new Date().toLocaleDateString('en-US', {month:'long', year:'numeric'}) + " summary";
+            if (!db.pin) document.getElementById('pin-label').innerText = "Set a 4-Digit PIN";
         }
 
         function pressPin(n) {
@@ -153,21 +130,18 @@
                 currentPinInput += n;
                 document.getElementById('dot-' + currentPinInput.length).classList.add('bg-indigo-600', 'border-indigo-600');
             }
-            if (currentPinInput.length === 4) {
-                setTimeout(checkPin, 250);
-            }
+            if (currentPinInput.length === 4) setTimeout(checkPin, 250);
         }
 
         function checkPin() {
             if (!db.pin) {
                 db.pin = currentPinInput;
                 save();
-                alert("PIN Saved! Your app is now locked.");
                 document.getElementById('pin-screen').style.display = 'none';
             } else if (currentPinInput === db.pin) {
                 document.getElementById('pin-screen').style.display = 'none';
             } else {
-                alert("Incorrect PIN");
+                alert("Incorrect");
                 clearPin();
             }
         }
@@ -177,7 +151,6 @@
             for(let i=1; i<=4; i++) document.getElementById('dot-'+i).classList.remove('bg-indigo-600', 'border-indigo-600');
         }
 
-        // 2. Navigation
         function showTab(id) {
             document.querySelectorAll('.tab-content').forEach(t => t.classList.remove('active'));
             document.querySelectorAll('.nav-btn').forEach(b => b.classList.remove('active'));
@@ -187,59 +160,47 @@
             updateUI();
         }
 
-        function setFinType(type) {
-            currentFinType = type;
-            document.getElementById('btn-inc').className = type === 'income' ? 'flex-1 py-2 rounded-lg font-bold bg-emerald-600 text-white shadow' : 'flex-1 py-2 rounded-lg font-bold';
-            document.getElementById('btn-exp').className = type === 'expense' ? 'flex-1 py-2 rounded-lg font-bold bg-white shadow text-red-600' : 'flex-1 py-2 rounded-lg font-bold';
+        function setFinType(t) {
+            currentFinType = t;
+            document.getElementById('btn-inc').className = t === 'income' ? 'flex-1 py-2 rounded-lg font-bold bg-emerald-600 text-white' : 'flex-1 py-2 rounded-lg font-bold';
+            document.getElementById('btn-exp').className = t === 'expense' ? 'flex-1 py-2 rounded-lg font-bold bg-white text-red-600 shadow' : 'flex-1 py-2 rounded-lg font-bold';
         }
 
-        // 3. Calculations
         function logWork() {
-            const start = document.getElementById('work-start').value;
-            const end = document.getElementById('work-end').value;
-            const breakMins = parseInt(document.getElementById('work-break').value) || 0;
-            if(!start || !end) return alert("Please set start and end times");
-
-            const hrs = (new Date(`2000/01/01 ${end}`) - new Date(`2000/01/01 ${start}`)) / 1000 / 60 / 60;
-            const final = hrs - (breakMins / 60);
-            
-            db.work.push({ date: document.getElementById('work-date').value, hours: final, ts: Date.now() });
+            const s = document.getElementById('work-start').value;
+            const e = document.getElementById('work-end').value;
+            const b = parseInt(document.getElementById('work-break').value) || 0;
+            if(!s || !e) return;
+            const hrs = (new Date(`2000/01/01 ${e}`) - new Date(`2000/01/01 ${s}`)) / 3600000 - (b/60);
+            db.work.push({ date: document.getElementById('work-date').value, hours: hrs, ts: Date.now() });
             save();
             showTab('dashboard');
         }
 
         function logFinance() {
-            const amt = parseFloat(document.getElementById('fin-amount').value);
-            if(!amt) return alert("Enter amount");
-            db.finance.push({ type: currentFinType, amount: amt, date: document.getElementById('fin-date').value });
+            const a = parseFloat(document.getElementById('fin-amount').value);
+            if(!a) return;
+            db.finance.push({ type: currentFinType, amount: a, date: document.getElementById('fin-date').value });
             save();
             showTab('dashboard');
         }
 
-        function save() { localStorage.setItem('user_data_secure', JSON.stringify(db)); updateUI(); }
+        function save() { localStorage.setItem('secure_v2', JSON.stringify(db)); updateUI(); }
 
         function updateUI() {
-            const now = Date.now();
-            const weekAgo = now - (7 * 24 * 60 * 60 * 1000);
-            
+            const weekAgo = Date.now() - 604800000;
             const wHrs = db.work.filter(w => w.ts > weekAgo).reduce((s, w) => s + w.hours, 0);
             const mHrs = db.work.reduce((s, w) => s + w.hours, 0);
             const inc = db.finance.filter(f => f.type === 'income').reduce((s, f) => s + f.amount, 0);
             const exp = db.finance.filter(f => f.type === 'expense').reduce((s, f) => s + f.amount, 0);
-
             document.getElementById('dash-week').innerText = wHrs.toFixed(1) + 'h';
             document.getElementById('dash-month').innerText = mHrs.toFixed(1) + 'h';
-            document.getElementById('dash-income').innerText = '$' + inc.toLocaleString();
-            document.getElementById('dash-expenses').innerText = '$' + exp.toLocaleString();
-            document.getElementById('dash-balance').innerText = '$' + (inc - exp).toLocaleString();
-            
-            const tip = document.getElementById('saving-tip');
-            if (exp > inc * 0.9 && inc > 0) tip.innerText = "Warning: Spending at 90% of income. Try to cut non-essentials tomorrow.";
-            else if (wHrs > 45) tip.innerText = "Hard work pays off! You've clocked 45+ hours this week. Don't forget to rest!";
-            else tip.innerText = "Tip: Tracking small expenses daily can save you up to $100 per month.";
+            document.getElementById('dash-income').innerText = '$' + inc;
+            document.getElementById('dash-expenses').innerText = '$' + exp;
+            document.getElementById('dash-balance').innerText = '$' + (inc - exp);
         }
 
-        function clearData() { if(confirm("Permanently delete everything?")) { localStorage.clear(); location.reload(); } }
+        function clearData() { if(confirm("Reset all?")) { localStorage.clear(); location.reload(); } }
 
         document.getElementById('work-date').valueAsDate = new Date();
         document.getElementById('fin-date').valueAsDate = new Date();
@@ -248,4 +209,3 @@
     </script>
 </body>
 </html>
-
