@@ -14,23 +14,24 @@
     
     <style>
         body { font-family: -apple-system, system-ui, sans-serif; background-color: #f8fafc; user-select: none; -webkit-tap-highlight-color: transparent; }
-        .card { background: white; border-radius: 16px; border: 1px solid #f1f5f9; }
+        .card { background: white; border-radius: 20px; border: 1px solid #f1f5f9; box-shadow: 0 4px 6px -1px rgb(0 0 0 / 0.05); }
         .tab-content { display: none; }
-        .tab-content.active { display: block; animation: slideIn 0.2s ease-out; }
-        @keyframes slideIn { from { opacity: 0; transform: translateY(10px); } to { opacity: 1; transform: translateY(0); } }
+        .tab-content.active { display: block; animation: fadeIn 0.3s ease-in-out; }
+        @keyframes fadeIn { from { opacity: 0; transform: translateY(5px); } to { opacity: 1; transform: translateY(0); } }
         .pin-screen { position: fixed; inset: 0; background: white; z-index: 100; display: flex; flex-direction: column; align-items: center; justify-content: center; }
-        input { border: 1px solid #e2e8f0; border-radius: 12px; padding: 12px; width: 100%; font-size: 16px; outline: none; }
-        input:focus { border-color: #4f46e5; }
-        .nav-btn { display: flex; flex-direction: column; align-items: center; color: #94a3b8; font-size: 10px; font-weight: bold; }
-        .nav-btn.active { color: #4f46e5; }
-        .history-item { display: flex; justify-content: space-between; padding: 12px; border-bottom: 1px solid #f8fafc; }
+        input { border: 1px solid #e2e8f0; border-radius: 14px; padding: 14px; width: 100%; font-size: 16px; outline: none; transition: all 0.2s; }
+        input:focus { border-color: #6366f1; ring: 2px; ring-color: #6366f1; }
+        .nav-btn { display: flex; flex-direction: column; align-items: center; color: #94a3b8; font-size: 11px; font-weight: 600; transition: all 0.2s; }
+        .nav-btn.active { color: #4f46e5; transform: scale(1.1); }
+        .history-item { display: flex; justify-content: space-between; padding: 14px; border-bottom: 1px solid #f8fafc; border-radius: 12px; }
+        .history-item:active { background-color: #f1f5f9; }
     </style>
 </head>
 <body class="pb-32">
 
     <div id="pin-screen" class="pin-screen">
-        <h2 id="pin-label" class="text-2xl font-bold mb-6 text-slate-800">Sisesta PIN</h2>
-        <div class="flex gap-4 mb-10">
+        <h2 id="pin-label" class="text-2xl font-bold mb-8 text-slate-800 tracking-tight">Sisesta PIN</h2>
+        <div class="flex gap-5 mb-12">
             <div id="dot-1" class="w-4 h-4 rounded-full border-2 border-slate-300"></div>
             <div id="dot-2" class="w-4 h-4 rounded-full border-2 border-slate-300"></div>
             <div id="dot-3" class="w-4 h-4 rounded-full border-2 border-slate-300"></div>
@@ -38,107 +39,115 @@
         </div>
         <div class="grid grid-cols-3 gap-6">
             <script>
-                for(let i=1; i<=9; i++) document.write(`<button onclick="pressPin(${i})" class="w-16 h-16 rounded-full bg-slate-50 text-2xl font-bold active:bg-indigo-100">${i}</button>`);
+                for(let i=1; i<=9; i++) document.write(`<button onclick="pressPin(${i})" class="w-18 h-18 text-2xl font-semibold active:scale-90 transition-transform">${i}</button>`);
             </script>
             <span></span>
-            <button onclick="pressPin(0)" class="w-16 h-16 rounded-full bg-slate-50 text-2xl font-bold active:bg-indigo-100">0</button>
-            <button onclick="clearPin()" class="text-xs font-bold text-red-500 uppercase">Puhasta</button>
+            <button onclick="pressPin(0)" class="w-18 h-18 text-2xl font-semibold active:scale-90 transition-transform">0</button>
+            <button onclick="clearPin()" class="text-[10px] font-bold text-red-500 uppercase tracking-widest">Kustuta</button>
         </div>
     </div>
 
-    <header class="p-6">
-        <h1 id="page-title" class="text-3xl font-black text-slate-900">Ülevaade</h1>
-        <p id="current-month-display" class="text-slate-500 font-medium italic"></p>
+    <header class="p-6 pt-10">
+        <h1 id="page-title" class="text-3xl font-black text-slate-900 tracking-tight">Ülevaade</h1>
+        <p id="current-month-display" class="text-slate-400 font-semibold text-sm mt-1"></p>
     </header>
 
-    <main class="px-4 space-y-4">
+    <main class="px-4 space-y-5">
         
-        <div id="tab-dashboard" class="tab-content active space-y-4">
-            <div class="grid grid-cols-2 gap-3">
-                <div onclick="showTab('work')" class="card p-3 border-b-4 border-indigo-500 shadow-sm">
-                    <p class="text-[9px] font-black text-slate-400 uppercase">Nädala tunnid</p>
-                    <h2 id="dash-week" class="text-xl font-bold text-indigo-600">0h</h2>
+        <div id="tab-dashboard" class="tab-content active space-y-5">
+            <div class="grid grid-cols-2 gap-4">
+                <div class="card p-4 border-b-4 border-indigo-500">
+                    <p class="text-[10px] font-bold text-slate-400 uppercase tracking-widest">Nädala tunnid</p>
+                    <h2 id="dash-week" class="text-2xl font-bold text-indigo-600">0h</h2>
                 </div>
-                <div onclick="showTab('finance')" class="card p-3 border-b-4 border-emerald-500 shadow-sm">
-                    <p class="text-[9px] font-black text-slate-400 uppercase">Saldo</p>
-                    <h2 id="dash-balance" class="text-xl font-bold text-slate-800">$0</h2>
+                <div class="card p-4 border-b-4 border-emerald-500">
+                    <p class="text-[10px] font-bold text-slate-400 uppercase tracking-widest">Saldo</p>
+                    <h2 id="dash-balance" class="text-2xl font-bold text-slate-800">$0</h2>
                 </div>
             </div>
-            <div class="card p-4">
-                <canvas id="workChart" class="mb-6"></canvas>
-                <canvas id="financeChart"></canvas>
+            <div class="card p-5">
+                <p class="text-[10px] font-bold text-slate-400 uppercase mb-4 tracking-widest text-center">Tööaja jaotuvus</p>
+                <canvas id="workChart" height="150"></canvas>
+            </div>
+            <div class="card p-5">
+                <p class="text-[10px] font-bold text-slate-400 uppercase mb-4 tracking-widest text-center">Rahaline jaotuvus</p>
+                <canvas id="financeChart" height="200"></canvas>
             </div>
         </div>
 
-        <div id="tab-work" class="tab-content space-y-4">
-            <div class="card p-5 space-y-4 shadow-sm">
+        <div id="tab-work" class="tab-content space-y-5">
+            <div class="card p-6 space-y-4">
                 <input type="date" id="work-date">
-                <div class="grid grid-cols-2 gap-2">
-                    <input type="time" id="work-start">
-                    <input type="time" id="work-end">
+                <div class="grid grid-cols-2 gap-3">
+                    <div class="space-y-1">
+                        <label class="text-[10px] font-bold text-slate-400 uppercase ml-2">Algus</label>
+                        <input type="time" id="work-start">
+                    </div>
+                    <div class="space-y-1">
+                        <label class="text-[10px] font-bold text-slate-400 uppercase ml-2">Lõpp</label>
+                        <input type="time" id="work-end">
+                    </div>
                 </div>
-                <input type="number" id="work-break" placeholder="Paus (minutites)">
+                <input type="number" id="work-break" placeholder="Paus (minutid)">
                 <input type="text" id="work-note" placeholder="Märge">
-                <button onclick="logWork()" class="w-full bg-slate-900 text-white font-bold py-4 rounded-2xl">Salvesta tööaeg</button>
+                <button onclick="logWork()" class="w-full bg-slate-900 text-white font-bold py-4 rounded-2xl shadow-xl active:scale-95 transition-all">Salvesta tööaeg</button>
             </div>
-            <div class="card p-4">
-                <h3 class="text-xs font-bold text-slate-400 uppercase mb-3">Töö ajalugu</h3>
-                <div id="work-history-list" class="space-y-1 text-sm"></div>
-            </div>
+            <div id="work-history-list" class="space-y-2 pb-4"></div>
         </div>
 
-        <div id="tab-finance" class="tab-content space-y-4">
-            <div class="card p-5 space-y-4 shadow-sm">
-                <div class="flex bg-slate-100 p-1 rounded-xl gap-1">
-                    <button id="f-inc" onclick="setFinType('income')" class="flex-1 py-2 rounded-lg text-xs font-bold">Tulu</button>
-                    <button id="f-exp" onclick="setFinType('expense')" class="flex-1 py-2 rounded-lg text-xs font-bold">Kulu</button>
-                    <button id="f-bill" onclick="setFinType('bill')" class="flex-1 py-2 rounded-lg text-xs font-bold">Arve</button>
+        <div id="tab-finance" class="tab-content space-y-5">
+            <div class="card p-6 space-y-4">
+                <div class="flex bg-slate-100 p-1.5 rounded-2xl gap-1">
+                    <button id="f-inc" onclick="setFinType('income')" class="flex-1 py-2 rounded-xl text-xs font-bold transition-all">Tulu</button>
+                    <button id="f-exp" onclick="setFinType('expense')" class="flex-1 py-2 rounded-xl text-xs font-bold transition-all">Kulu</button>
+                    <button id="f-bill" onclick="setFinType('bill')" class="flex-1 py-2 rounded-xl text-xs font-bold transition-all">Arve</button>
                 </div>
-                <input type="text" id="fin-name" placeholder="Nimetus">
-                <div class="grid grid-cols-2 gap-2">
+                <input type="text" id="fin-name" placeholder="Kirjeldus">
+                <div class="grid grid-cols-2 gap-3">
                     <input type="number" id="fin-amount" placeholder="Summa">
                     <input type="date" id="fin-date">
                 </div>
-                <button onclick="logFinance()" class="w-full bg-slate-900 text-white font-bold py-4 rounded-2xl shadow-lg">Lisa kanne</button>
+                <button onclick="logFinance()" class="w-full bg-slate-900 text-white font-bold py-4 rounded-2xl shadow-xl active:scale-95 transition-all">Lisa kanne</button>
             </div>
-            <div class="card p-4">
-                <h3 class="text-xs font-bold text-slate-400 uppercase mb-3">Viimased kanded</h3>
-                <div id="finance-history-list" class="space-y-1 text-sm"></div>
-            </div>
+            <div id="finance-history-list" class="space-y-2 pb-4"></div>
         </div>
 
-        <div id="tab-lists" class="tab-content space-y-4">
-            <div class="card p-5 space-y-3">
+        <div id="tab-lists" class="tab-content space-y-5">
+            <div class="card p-6 space-y-4">
                 <div class="flex gap-2">
-                    <input type="text" id="todo-input" placeholder="Uus ülesanne või arve...">
-                    <button onclick="addTodo()" class="bg-indigo-600 text-white px-6 rounded-xl font-bold">+</button>
+                    <input type="text" id="todo-input" placeholder="Kirjuta siia...">
+                    <button onclick="addTodo()" class="bg-indigo-600 text-white px-6 rounded-2xl font-bold active:scale-90 transition-all">+</button>
                 </div>
             </div>
-            <div id="todo-list" class="space-y-2"></div>
+            <div id="todo-list" class="space-y-3 pb-4"></div>
         </div>
 
-        <div id="tab-settings" class="tab-content p-4 text-center">
-            <button onclick="clearData()" class="w-full bg-red-50 text-red-600 py-4 rounded-2xl font-bold">Kustuta kõik andmed</button>
+        <div id="tab-settings" class="tab-content p-6 text-center space-y-4">
+            <div class="card p-8 bg-red-50 border-red-100">
+                <p class="text-sm text-red-600 font-medium mb-4">Ettevaatust! See tegevus on lõplik.</p>
+                <button onclick="clearData()" class="w-full bg-red-600 text-white py-4 rounded-2xl font-bold shadow-lg">Kustuta kõik andmed</button>
+            </div>
+            <p class="text-[10px] text-slate-300 uppercase tracking-widest font-bold">Versioon 8.0</p>
         </div>
     </main>
 
-    <nav class="fixed bottom-0 left-0 right-0 bg-white/90 backdrop-blur-md border-t flex justify-around p-4 pb-8 z-50">
+    <nav class="fixed bottom-0 left-0 right-0 bg-white/80 backdrop-blur-xl border-t border-slate-100 flex justify-around p-4 pb-10 z-50">
         <button onclick="showTab('dashboard')" class="nav-btn active" id="nav-dashboard">🏠<br>Kodu</button>
         <button onclick="showTab('work')" class="nav-btn" id="nav-work">🕒<br>Töö</button>
         <button onclick="showTab('finance')" class="nav-btn" id="nav-finance">💰<br>Raha</button>
-        <button onclick="showTab('lists')" class="nav-btn" id="nav-lists">📝<br>Nimekiri</button>
-        <button onclick="showTab('settings')" class="nav-btn" id="nav-settings">⚙️<br>Seaded</button>
+        <button onclick="showTab('lists')" class="nav-btn" id="nav-lists">📝<br>List</button>
+        <button onclick="showTab('settings')" class="nav-btn" id="nav-settings">⚙️<br>Sätted</button>
     </nav>
 
     <script>
-        let db = JSON.parse(localStorage.getItem('secure_v7')) || { work: [], finance: [], todos: [], pin: null };
+        let db = JSON.parse(localStorage.getItem('minupaevik_v8')) || { work: [], finance: [], todos: [], pin: null };
         let currentPinInput = "", currentFinType = 'expense', wChart, fChart;
 
         function initApp() {
             const date = new Date();
             const months = ["jaanuar", "veebruar", "märts", "aprill", "mai", "juuni", "juuli", "august", "september", "oktoober", "november", "detsember"];
-            document.getElementById('current-month-display').innerText = months[date.getMonth()] + " " + date.getFullYear();
-            if (!db.pin) document.getElementById('pin-label').innerText = "Määra uus PIN";
+            document.getElementById('current-month-display').innerText = months[date.getMonth()].toUpperCase() + " " + date.getFullYear();
+            if (!db.pin) document.getElementById('pin-label').innerText = "Loo PIN kood";
             initCharts(); updateUI(); setFinType('expense');
         }
 
@@ -173,8 +182,8 @@
 
         function setFinType(t) {
             currentFinType = t;
-            ['f-inc','f-exp','f-bill'].forEach(id => document.getElementById(id).className = "flex-1 py-2 rounded-lg text-xs font-bold transition-all");
-            document.getElementById(t === 'income' ? 'f-inc' : t === 'expense' ? 'f-exp' : 'f-bill').className += " bg-white shadow-md text-slate-900";
+            ['f-inc','f-exp','f-bill'].forEach(id => document.getElementById(id).className = "flex-1 py-2 rounded-xl text-xs font-bold transition-all text-slate-500");
+            document.getElementById(t === 'income' ? 'f-inc' : t === 'expense' ? 'f-exp' : 'f-bill').className = "flex-1 py-2 rounded-xl text-xs font-bold transition-all bg-white shadow-sm text-slate-900";
         }
 
         function logWork() {
@@ -203,49 +212,47 @@
         function deleteFinance(id) { if(confirm("Kustuta see kanne?")) { db.finance = db.finance.filter(f => f.id !== id); save(); } }
         function deleteWork(id) { if(confirm("Kustuta see vahetus?")) { db.work = db.work.filter(w => w.id !== id); save(); } }
 
-        function save() { localStorage.setItem('secure_v7', JSON.stringify(db)); updateUI(); }
+        function save() { localStorage.setItem('minupaevik_v8', JSON.stringify(db)); updateUI(); }
 
         function initCharts() {
-            wChart = new Chart(document.getElementById('workChart'), { type: 'bar', data: { labels: [], datasets: [{ label: 'Tunnid', data: [], backgroundColor: '#6366f1', borderRadius: 8 }] }, options: { plugins: { legend: { display: false } } } });
-            fChart = new Chart(document.getElementById('financeChart'), { type: 'doughnut', data: { labels: ['Tulu', 'Kulu', 'Arve'], datasets: [{ data: [0,0,0], backgroundColor: ['#10b981', '#ef4444', '#f97316'] }] }, options: { plugins: { legend: { position: 'bottom' } } } });
+            wChart = new Chart(document.getElementById('workChart'), { type: 'bar', data: { labels: [], datasets: [{ label: 'Tunnid', data: [], backgroundColor: '#6366f1', borderRadius: 8 }] }, options: { scales: { y: { beginAtZero: true, grid: { display: false } } }, plugins: { legend: { display: false } } } });
+            fChart = new Chart(document.getElementById('financeChart'), { type: 'doughnut', data: { labels: ['Tulu', 'Kulu', 'Arve'], datasets: [{ data: [0,0,0], backgroundColor: ['#10b981', '#ef4444', '#f97316'], borderWidth: 0 }] }, options: { plugins: { legend: { position: 'bottom', labels: { usePointStyle: true, padding: 20 } } }, cutout: '70%' } });
         }
 
         function updateUI() {
             const weekAgo = Date.now() - 604800000;
             const wHrs = db.work.filter(w => w.ts > weekAgo).reduce((s, w) => s + w.hours, 0);
             const inc = db.finance.filter(f => f.type === 'income').reduce((s, f) => s + f.amount, 0), exp = db.finance.filter(f => f.type === 'expense').reduce((s, f) => s + f.amount, 0), bill = db.finance.filter(f => f.type === 'bill').reduce((s, f) => s + f.amount, 0);
-
             document.getElementById('dash-week').innerText = wHrs.toFixed(1) + 'h';
             document.getElementById('dash-balance').innerText = '$' + (inc - exp - bill).toLocaleString();
 
             const last7 = [...Array(7)].map((_, i) => {
                 const d = new Date(); d.setDate(d.getDate() - (6 - i)); const ds = d.toISOString().split('T')[0];
-                const dayNames = ["P", "E", "T", "K", "N", "R", "L"];
-                return { l: dayNames[d.getDay()], v: db.work.filter(w => w.date === ds).reduce((s, w) => s + w.hours, 0) };
+                return { l: ["P","E","T","K","N","R","L"][d.getDay()], v: db.work.filter(w => w.date === ds).reduce((s, w) => s + w.hours, 0) };
             });
             wChart.data.labels = last7.map(x => x.l); wChart.data.datasets[0].data = last7.map(x => x.v); wChart.update();
             fChart.data.datasets[0].data = [inc, exp, bill]; fChart.update();
 
             document.getElementById('finance-history-list').innerHTML = db.finance.slice().reverse().map(f => `
-                <div class="history-item" onclick="deleteFinance(${f.id})">
-                    <div><span class="font-bold">${f.name}</span><br><span class="text-[10px] text-slate-400">${f.date}</span></div>
+                <div class="card p-1 mb-2"><div class="history-item" onclick="deleteFinance(${f.id})">
+                    <div><span class="font-bold text-slate-800">${f.name}</span><br><span class="text-[10px] text-slate-400 font-bold">${f.date}</span></div>
                     <div class="font-black ${f.type==='income'?'text-emerald-500':'text-red-500'}">${f.type==='income'?'+':'-'}$${f.amount}</div>
-                </div>`).join('');
+                </div></div>`).join('');
 
             document.getElementById('work-history-list').innerHTML = db.work.slice().reverse().map(w => `
-                <div class="history-item" onclick="deleteWork(${w.id})">
-                    <div><span class="font-bold">${w.date}</span><br><span class="text-[10px] text-slate-500 italic">${w.note || 'Märge puudub'}</span></div>
+                <div class="card p-1 mb-2"><div class="history-item" onclick="deleteWork(${w.id})">
+                    <div><span class="font-bold text-slate-800">${w.date}</span><br><span class="text-[10px] text-slate-400 font-bold italic">${w.note || 'Märge puudub'}</span></div>
                     <div class="font-black text-indigo-600">${w.hours.toFixed(1)}h</div>
-                </div>`).join('');
+                </div></div>`).join('');
 
             document.getElementById('todo-list').innerHTML = db.todos.map(t => `
                 <div class="card p-4 flex justify-between items-center ${t.done?'opacity-40':''}" onclick="toggleTodo(${t.id})">
-                    <span class="${t.done?'line-through':''} font-medium text-sm">${t.text}</span>
-                    <div class="w-5 h-5 rounded-full border-2 ${t.done?'bg-indigo-500 border-indigo-500':'border-slate-200'}"></div>
+                    <span class="${t.done?'line-through':''} font-semibold text-slate-700 text-sm">${t.text}</span>
+                    <div class="w-6 h-6 rounded-full border-2 ${t.done?'bg-indigo-500 border-indigo-500':'border-slate-200'}"></div>
                 </div>`).join('');
         }
 
-        function clearData() { if(confirm("Kustuta kõik?")) { localStorage.clear(); location.reload(); } }
+        function clearData() { if(confirm("Kustuta kõik andmed?")) { localStorage.clear(); location.reload(); } }
         document.getElementById('work-date').valueAsDate = new Date();
         document.getElementById('fin-date').valueAsDate = new Date();
         initApp();
